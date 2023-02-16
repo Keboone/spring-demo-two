@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,22 +22,38 @@ public class FileRandomFortuneService implements FortuneService
 	
 	private Random rand = new Random();
 	
+	
+	
 	public FileRandomFortuneService() 
 	{
+		System.out.println("FileRandomFortuneService default constructor");
+	}
+	
+	@PostConstruct
+	public void loadTheFileAtTheStart()
+	{
+		System.out.println(">> FileRandomFortuneService: inside method loadTheFortunesFile");
+		
 		File theFile = new File(fileName);
 		
 		System.out.println("Reading fortunes from the file: " + theFile);
 		System.out.println("File exists: " + theFile.exists());
 		
-		listOfFortunes = new ArrayList<>();
+		listOfFortunes = new ArrayList<String>();
 		
 		try(BufferedReader br = new BufferedReader(new FileReader(theFile))) 
 		{
 			String tempLine;
 			
+			System.out.println("\nHere is the file content: \n");
+			
 			while((tempLine = br.readLine()) != null)
 			{
 				listOfFortunes.add(tempLine);
+				
+//				dodatkowo wypisanie zawartości pliku
+				
+				System.out.println(tempLine);
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -45,7 +63,38 @@ public class FileRandomFortuneService implements FortuneService
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 	}
+	
+// 	poprzednia wersja gdy wszystko było w konstruktorze
+//	
+//	public FileRandomFortuneService() 
+//	{
+//		File theFile = new File(fileName);
+//		
+//		System.out.println("Reading fortunes from the file: " + theFile);
+//		System.out.println("File exists: " + theFile.exists());
+//		
+//		listOfFortunes = new ArrayList<String>();
+//		
+//		try(BufferedReader br = new BufferedReader(new FileReader(theFile))) 
+//		{
+//			String tempLine;
+//			
+//			while((tempLine = br.readLine()) != null)
+//			{
+//				listOfFortunes.add(tempLine);
+//			}
+//			
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	@Override
 	public String getFortune() 

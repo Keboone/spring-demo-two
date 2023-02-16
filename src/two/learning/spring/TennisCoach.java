@@ -1,10 +1,22 @@
 package two.learning.spring;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
+//@Scope("prototype")
 public class TennisCoach implements Coach 
 {
 	/*
@@ -30,9 +42,14 @@ public class TennisCoach implements Coach
 //	@Qualifier("happyFortuneService")
 	private FortuneService fortuneService;
 	
+	private String fileName = 
+			"C:/Users/Keboon/eclipse-workspace/spring-demo-annotations/src/randomFortuneData.txt";
+	
+	
 	@Autowired
 	public TennisCoach(@Qualifier("jojo") FortuneService theFortuneService)
 	{
+		System.out.println("TennisCoach >> we are in constructor");
 		fortuneService = theFortuneService;
 	}
 	
@@ -47,5 +64,37 @@ public class TennisCoach implements Coach
 	{
 		return fortuneService.getFortune();
 	}
+	
+	// define init method
+	
+	@PostConstruct
+	public void doStartUpStuff()
+	{
+		System.out.println("Doing some start up stuff for TennisCoach!");
+	}
+	
+	/*
+	 * gdybyśmy używali @Scope("prototype") nie możemy wykonać anotacji @PreDestroy
+	 * ani wgl metody destroy!!
+	 * 
+	 * Spring does not manage the complete lifecycle of a prototype bean
+	 */
+	
+	@PreDestroy
+	public void doCleanUpStuff()
+	{
+		System.out.println("Cleaning up the stuff for TennisCoach!");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
