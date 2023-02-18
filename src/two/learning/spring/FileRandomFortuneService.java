@@ -21,8 +21,7 @@ public class FileRandomFortuneService implements FortuneService
 	private String fileName = "C:/Users/Keboon/eclipse-workspace/spring-demo-annotations/src/randomFortuneData.txt";
 	
 	private Random rand = new Random();
-	
-	
+
 	
 	public FileRandomFortuneService() 
 	{
